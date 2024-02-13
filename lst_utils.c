@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: natrijau <natrijau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 11:41:28 by natrijau          #+#    #+#             */
-/*   Updated: 2024/02/07 12:28:25 by natrijau         ###   ########.fr       */
+/*   Created: 2024/02/13 15:27:38 by natrijau          #+#    #+#             */
+/*   Updated: 2024/02/13 15:38:29 by natrijau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "main.h"
 
-char	*ft_strdup(const char *s)
+t_stak	*ft_lstlast(t_stak *lst)
 {
-	char	*str;
+	while (lst->next != NULL)
+		lst = lst->next;
+	return (lst);
+}
 
-	str = (char *)malloc (sizeof (char) * (ft_strlen(s) + 1));
-	if (str == NULL)
-		return (NULL);
-	ft_strlcpy(str, s, (ft_strlen(s) + 1));
-	return (str);
+void	del(void *del)
+{
+	(void)del;
 }

@@ -6,12 +6,11 @@
 /*   By: natrijau <natrijau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:49:22 by natrijau          #+#    #+#             */
-/*   Updated: 2024/02/05 17:48:05 by natrijau         ###   ########.fr       */
+/*   Updated: 2024/02/13 15:40:08 by natrijau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-#include <stdio.h>
 
 void	takes_integers(t_stak **lst, char *str)
 {
@@ -24,7 +23,7 @@ void	takes_integers(t_stak **lst, char *str)
 	{
 		j = 0;
 		while (str[i] == ' ')
-			i++;	
+			i++;
 		if (str[i] == '-' || str[i] == '+')
 		{
 			i++;
@@ -35,8 +34,9 @@ void	takes_integers(t_stak **lst, char *str)
 			j++;
 			i++;
 		}
-		tmp = ft_strdup(&str[i - j]);
-		ft_lstadd_back(lst, ft_lstnew((void *)f_atoi(tmp)));
+		tmp = ft_substr(str, i - j, j);
+		if (!(tmp[0] == '\0'))
+			ft_lstadd_back(lst, ft_lstnew(0, ft_atoi(tmp)));
 		free(tmp);
 	}
 }
@@ -56,6 +56,8 @@ static int	multiple_integer(char *str)
 		}
 		while (str[i] == ' ')
 			i++;
+		if ((str[i] == '-' || str[i] == '+') && ft_isdigit(str[i - 1]) != 0)
+			return (-1);
 		if (str[i] == '-' || str[i] == '+')
 			i++;
 		if (ft_isdigit(str[i]))
@@ -65,26 +67,38 @@ static int	multiple_integer(char *str)
 	return (0);
 }
 
-void	get_integer(t_stak **lst, char *str)
+int	get_integer(t_stak **lst, char *str)
 {
 	int	i;
 
 	i = 0;
-	if (multiple_integer(str) != 0)
+	if (multiple_integer(str) == 1)
+	{
 		takes_integers(lst, str);
+		return (0);
+	}
+	if (multiple_integer(str) == -1)
+	{
+		ft_putstr_fd("Error\n", 2);
+		return (1);
+	}
 	else
-		ft_lstadd_back(lst, ft_lstnew((void *)f_atoi(str)));
-	// *lst = ft_lstnew((void *)f_atoi(str));
+	{
+		ft_lstadd_back(lst, ft_lstnew(0, ft_atoi(str)));
+		return (0);
+	}
 }
 
-void	pars_integer(t_stak **lst, int ac, char **av)
+int	pars_integer(t_stak **lst, int ac, char **av)
 {
 	int	i;
 
 	i = 1;
 	while (i < ac)
 	{
-		get_integer(lst, av[i]);
+		if (get_integer(lst, av[i]) != 0)
+			return (1);
 		i++;
 	}
+	return (0);
 }
